@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/rantolin/bqsql/cmd/describe"
 	"github.com/rantolin/bqsql/cmd/list"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -42,6 +43,7 @@ func Execute() {
 
 func addSubcommandPalletes() {
 	rootCmd.AddCommand(list.ListCmd)
+	rootCmd.AddCommand(describe.DescribeCmd)
 }
 
 func initViper() {
