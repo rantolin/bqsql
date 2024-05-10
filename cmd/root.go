@@ -53,14 +53,17 @@ func initViper() {
 		cobra.CheckErr(err)
 
 		viper.AddConfigPath(home)
+		viper.AddConfigPath(".")
 		viper.SetConfigName(".bqsqlrc")
-		viper.SetConfigType("envfile")
+		viper.SetConfigType("env")
 	}
 
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	} else {
+		fmt.Println("Error reading config file:", err)
 	}
 	// viper.SetEnvPrefix("BQSQL")
 	// viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
