@@ -60,20 +60,6 @@ For example:
 bqsql --project_id my-project --dataset my_dataset --query "SELECT * FROM my_table"
 ```
 
-### Output Format
-
-By default, **bqsql** outputs the query result in a tabular format. You can also specify the output format using the `--format` option. Currently supported formats are `csv`, `json`, and `pretty` (default).
-
-```bash
-bqsql --project <PROJECT_ID> --dataset <DATASET_ID> --query "<SQL_QUERY>" --format <FORMAT>
-```
-
-For example, to output the result in CSV format:
-
-```bash
-bqsql --project my-project --dataset my_dataset --query "SELECT * FROM my_table" --format csv
-```
-
 ### Help
 
 To see all available options and commands, you can use the `--help` flag:
