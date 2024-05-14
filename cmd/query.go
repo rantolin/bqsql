@@ -14,8 +14,8 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-// queryBasic demonstrates issuing a query and reading results.
-func queryBasic(w io.Writer, projectID string, query string) error {
+// QueryBasic demonstrates issuing a query and reading results.
+func QueryBasic(w io.Writer, projectID string, query string) error {
 	ctx := context.Background()
 	client, err := bigquery.NewClient(ctx, projectID)
 	if err != nil {
@@ -70,7 +70,7 @@ to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		query := args[0]
-		queryBasic(
+		QueryBasic(
 			cmd.OutOrStdout(),
 			viper.GetString("project_id"),
 			query,
