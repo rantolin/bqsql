@@ -15,7 +15,6 @@ import (
 )
 
 // listDatasets demonstrates iterating through the collection of datasets in a project.
-// func listDatasets(projectID string, w io.Writer) error {
 func listDatasets(projectID string, w io.Writer) error {
 	ctx := context.Background()
 	client, err := bigquery.NewClient(ctx, projectID)

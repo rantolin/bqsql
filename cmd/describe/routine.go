@@ -74,7 +74,9 @@ to quickly create a Cobra application.`,
 		projectID := viper.GetString("project_id")
 		datasetID := viper.GetString("dataset")
 		routineID := args[0]
-		printRoutineInfo(cmd.OutOrStdout(), projectID, datasetID, routineID)
+		if err := printRoutineInfo(cmd.OutOrStdout(), projectID, datasetID, routineID); err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
@@ -86,8 +88,16 @@ func init() {
 	routineCmd.Flags().BoolP("return_type", "r", false, "Print routine return type")
 	routineCmd.Flags().BoolP("full_name", "f", false, "Print full qualified routine name")
 
-	viper.BindPFlag("body", routineCmd.Flags().Lookup("body"))
-	viper.BindPFlag("arguments", routineCmd.Flags().Lookup("arguments"))
-	viper.BindPFlag("return_type", routineCmd.Flags().Lookup("return_type"))
-	viper.BindPFlag("full_name", routineCmd.Flags().Lookup("full_name"))
+	if err := viper.BindPFlag("body", routineCmd.Flags().Lookup("body")); err != nil {
+		fmt.Println(err)
+	}
+	if err := viper.BindPFlag("arguments", routineCmd.Flags().Lookup("arguments")); err != nil {
+		fmt.Println(err)
+	}
+	if err := viper.BindPFlag("return_type", routineCmd.Flags().Lookup("return_type")); err != nil {
+		fmt.Println(err)
+	}
+	if err := viper.BindPFlag("full_name", routineCmd.Flags().Lookup("full_name")); err != nil {
+		fmt.Println(err)
+	}
 }
