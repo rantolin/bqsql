@@ -42,12 +42,7 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 	if err := status.Err(); err != nil {
 		return err
 	}
-
 	it, err := job.Read(ctx)
-	if err != nil {
-		return err
-	}
-
 	for {
 		var row []bigquery.Value
 		err := it.Next(&row)

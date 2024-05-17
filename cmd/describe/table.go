@@ -62,9 +62,9 @@ to quickly create a Cobra application.`,
 		table := args[0]
 		projectID := viper.GetString("project_id")
 		datasetID := viper.GetString("dataset")
-		if err := printTableInfo(cmd.OutOrStdout(), projectID, datasetID, table); err != nil {
-			fmt.Println(err)
-		}
+		printTableInfo(
+			cmd.OutOrStdout(), projectID, datasetID, table,
+		)
 	},
 }
 
@@ -74,10 +74,6 @@ func init() {
 	tableCmd.Flags().BoolP("num_rows", "n", false, "Show number of rows")
 	tableCmd.Flags().BoolP("schema", "s", false, "Show schema")
 
-	if err := tableCmd.MarkFlagRequired("num_rows"); err != nil {
-		fmt.Println(err)
-	}
-	if err := tableCmd.MarkFlagRequired("schema"); err != nil {
-		fmt.Println(err)
-	}
+	viper.BindPFlag("num_rows", tableCmd.Flags().Lookup("num_rows"))
+	viper.BindPFlag("schema", tableCmd.Flags().Lookup("schema"))
 }
