@@ -60,13 +60,11 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 // queryCmd represents the query command
 var queryCmd = &cobra.Command{
 	Use:   "query",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Short: "Executes a BigQuery SQL query",
+    Long: `The 'query' command allows you to execute a BigQuery SQL query directly from the command line.
+You need to provide the project ID and the SQL query as arguments.
+The command connects to the BigQuery client, runs the query, and prints the results.
+It's a convenient way to interact with your BigQuery datasets without leaving your terminal.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		query := args[0]

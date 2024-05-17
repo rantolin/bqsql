@@ -60,14 +60,13 @@ func printRoutineInfo(w io.Writer, projectID, datasetID, routineID string) error
 
 // routineCmd represents the routine command
 var routineCmd = &cobra.Command{
-	Use:   "routine",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Use:   "routine",
+    Short: "Describes a BigQuery routine",
+    Long: `The 'routine' subcommand provides detailed information about a specified BigQuery routine.
+You need to provide the project ID, dataset, and routine as arguments.
+The command connects to the BigQuery client, retrieves the metadata of the routine, and prints it.
+You can also use flags to get specific information like the body (--body), arguments (--arguments), return type (--return_type), or the fully qualified routine name (--full_name).
+It's a convenient way to quickly inspect the details of your BigQuery routines without leaving your terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("routine called")
 

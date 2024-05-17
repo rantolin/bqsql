@@ -49,14 +49,13 @@ func printTableInfo(w io.Writer, projectID, datasetID, tableID string) error {
 
 // tableCmd represents the table command
 var tableCmd = &cobra.Command{
-	Use:   "table",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Use:   "table",
+    Short: "Describes a BigQuery table",
+    Long: `The 'table' subcommand provides detailed information about a specified BigQuery table.
+You need to provide the project ID, dataset, and table as arguments.
+The command connects to the BigQuery client, retrieves the metadata of the table, and prints it.
+You can also use flags to get specific information like the number of rows (--num_rows) or the schema (--schema).
+It's a convenient way to quickly inspect the details of your BigQuery tables without leaving your terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("table called")
 		table := args[0]

@@ -12,13 +12,11 @@ import (
 // describeCmd represents the describe command
 var DescribeCmd = &cobra.Command{
 	Use:   "describe",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Provides detailed information about BigQuery resources",
+	Long: `The 'describe' command is a parent command that provides detailed information about various BigQuery resources.
+It doesn't directly perform any operations but serves as a root for other subcommands.
+Each subcommand corresponds to a specific resource type (e.g., table, dataset) and retrieves detailed information about it.
+Use 'bqsql describe [subcommand]' to get information about a specific resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("describe called")
 	},

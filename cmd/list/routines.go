@@ -38,14 +38,12 @@ func listRoutines(w io.Writer, projectID string, datasetID string) error {
 
 // routinesCmd represents the routines command
 var routinesCmd = &cobra.Command{
-	Use:   "routines",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Use:   "routines",
+    Short: "Lists all routines in a BigQuery dataset",
+    Long: `The 'routines' subcommand lists all routines in a specified BigQuery dataset.
+You need to provide the project ID and dataset as arguments.
+The command connects to the BigQuery client, retrieves all routines in the dataset, and prints their names.
+It's a convenient way to quickly inspect the routines in your BigQuery dataset without leaving your terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("routines called")
 

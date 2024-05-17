@@ -20,13 +20,11 @@ var configFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "bqsql",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "A CLI tool for interacting with BigQuery SQL",
+	Long: `bqsql is a command-line interface (CLI) tool that simplifies the process of interacting with Google's BigQuery SQL.
+It provides commands for describing, listing, and managing BigQuery datasets and tables.
+You can use it to perform operations like listing all datasets in a project, describing a specific table, and more.
+It is designed to be easy to use and flexible, making it a powerful tool for anyone working with BigQuery SQL.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },

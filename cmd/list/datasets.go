@@ -42,14 +42,12 @@ func listDatasets(projectID string, w io.Writer) error {
 
 // datasetsCmd represents the datasets command
 var datasetsCmd = &cobra.Command{
-	Use:   "datasets",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Use:   "datasets",
+    Short: "Lists all datasets in a BigQuery project",
+    Long: `The 'datasets' subcommand lists all datasets in a specified BigQuery project.
+You need to provide the project ID as an argument.
+The command connects to the BigQuery client, retrieves all datasets in the project, and prints their names.
+It's a convenient way to quickly inspect the datasets in your BigQuery project without leaving your terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		listDatasets(
 			viper.GetString("project_id"),

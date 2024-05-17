@@ -16,14 +16,12 @@ func runList(cmd *cobra.Command, args []string) {
 
 // listCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Use:   "list",
+    Short: "Lists BigQuery resources",
+    Long: `The 'list' command is a parent command that lists various BigQuery resources.
+It doesn't directly perform any operations but serves as a root for other subcommands.
+Each subcommand corresponds to a specific resource type (e.g., tables, datasets) and lists all instances of that resource.
+Use 'bqsql list [subcommand]' to list all instances of a specific resource.`,
 	Run: runList,
 }
 

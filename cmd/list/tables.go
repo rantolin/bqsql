@@ -42,14 +42,12 @@ func listTables(w io.Writer, projectID, datasetID string) error {
 
 // tablesCmd represents the tables command
 var tablesCmd = &cobra.Command{
-	Use:   "tables",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    Use:   "tables",
+    Short: "Lists all tables in a BigQuery dataset",
+    Long: `The 'tables' subcommand lists all tables in a specified BigQuery dataset.
+You need to provide the project ID and dataset as arguments.
+The command connects to the BigQuery client, retrieves all tables in the dataset, and prints their names.
+It's a convenient way to quickly inspect the tables in your BigQuery dataset without leaving your terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		listTables(
 			cmd.OutOrStdout(),
