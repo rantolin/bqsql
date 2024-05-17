@@ -41,7 +41,6 @@ func printTableInfo(w io.Writer, projectID, datasetID, tableID string) error {
 		fmt.Fprintf(w, "\n"+columns_format, "column_name", "type")
 		for _, fieldSchema := range meta.Schema {
 			fmt.Fprintf(w, columns_format, fieldSchema.Name, fieldSchema.Type)
-			// fmt.Fprintf(w, "Description: %s\n", fieldSchema.Description)
 		}
 	}
 	return nil

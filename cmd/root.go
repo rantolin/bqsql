@@ -25,9 +25,6 @@ var rootCmd = &cobra.Command{
 It provides commands for describing, listing, and managing BigQuery datasets and tables.
 You can use it to perform operations like listing all datasets in a project, describing a specific table, and more.
 It is designed to be easy to use and flexible, making it a powerful tool for anyone working with BigQuery SQL.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -75,8 +72,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.bqsqlrc)")
 	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "p", "", "Project ID")
 	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "d", "", "Dataset name")
-
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	viper.BindPFlag("project_id", rootCmd.PersistentFlags().Lookup("project_id"))
 	viper.BindPFlag("dataset", rootCmd.PersistentFlags().Lookup("dataset"))
