@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+Copyright © 2024 Roberto Antolin <rantolin DOT geo AT gmail DOT com>
 */
 package cmd
 
