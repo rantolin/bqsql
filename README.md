@@ -49,16 +49,42 @@ This command will open a browser window for you to authenticate.
 To run a SQL query against a BigQuery table, use the following command:
 
 ```bash
-bqsql --project_id <PROJECT_ID> --dataset <DATASET_ID> --query "<SQL_QUERY>"
+bqsql query "<SQL_QUERY>"
 ```
-
-Replace `<PROJECT_ID>` with your Google Cloud project ID, `<DATASET_ID>` with the BigQuery dataset ID containing the table you want to query, and `<SQL_QUERY>` with your SQL query enclosed in double quotes.
 
 For example:
 
 ```bash
-bqsql --project_id my-project --dataset my_dataset --query "SELECT * FROM my_table"
+bqsql query 'SELECT * FROM `project_id.dataset.my_table`;'
 ```
+
+Replace `<SQL_QUERY>` with your SQL query enclosed in double or single quotes.
+
+However, if you want to get a flavor of what the table looks like you can use the `head` command to query 10 records:
+
+```bash
+bqsl --project_id <PROJECT_ID> --dataset <DATASET_ID> head "my_table"
+```
+
+Replace `<PROJECT_ID>` with your Google Cloud project ID, `<DATASET_ID>` with the BigQuery dataset ID containing the table you want to query.
+
+### Listing Resources
+The list command allows you to list resources in your BigQuery project. Currently, it supports listing datasets and tables.
+
+To list all datasets in a project, use the following command:
+
+```bash
+bqsql --project_id <PROJECT_ID> list datasets
+```
+
+Replace <PROJECT_ID> with your Google Cloud project ID. This command will return a list of all datasets in the specified project.
+
+To list all tables in a dataset, use the following command:
+```bash
+bqsql --project_id <PROJECT_ID> --dataset <DATASET_ID> list tables
+```
+
+Replace <PROJECT_ID> with your Google Cloud project ID and <DATASET_ID> with the BigQuery dataset ID for which you want to list tables. This command will return a list of all tables in the specified dataset.
 
 ### Help
 
@@ -66,6 +92,12 @@ To see all available options and commands, you can use the `--help` flag:
 
 ```bash
 bqsql --help
+```
+
+You can use the `--help` flag to get aditional options and commands of subcommands:
+
+```bash
+bqsql describe --help
 ```
 
 ## License
