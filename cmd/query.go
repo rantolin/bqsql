@@ -9,6 +9,7 @@ import (
 	"io"
 
 	"cloud.google.com/go/bigquery"
+	formats "github.com/rantolin/bqsql/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/api/iterator"
@@ -42,7 +43,34 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 	if err := status.Err(); err != nil {
 		return err
 	}
+
 	it, err := job.Read(ctx)
+	if err != nil {
+		return err
+	}
+
+	schema := it.Schema.Relax()
+	widths, err := formats.CalculateRowWidths(it, schema)
+	if err != nil{
+		return err
+	}
+
+	fmt.Fprintln(w)
+
+    for i, field := range schema {
+		fieldName := field.Name
+		if i != 0 {
+			fmt.Fprint(w, " | ")
+		}
+		fmt.Fprintf(w, "%-*v", widths[i], fieldName)
+	}
+	fmt.Fprintln(w)
+
+	it, err = job.Read(ctx)
+	if err != nil {
+		return err
+	}
+
 	for {
 		var row []bigquery.Value
 		err := it.Next(&row)
@@ -52,7 +80,8 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 		if err != nil {
 			return err
 		}
-		fmt.Fprintln(w, row)
+
+		formats.PrintFormatedRow(w, row, widths)
 	}
 	return nil
 }
