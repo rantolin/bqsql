@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 
 	"cloud.google.com/go/bigquery"
 	formats "github.com/rantolin/bqsql/utils"
@@ -14,6 +15,19 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/api/iterator"
 )
+
+func getFinalQuery(query string) string {
+	maxRows := viper.GetInt("max_rows")
+	queryIsLimited := strings.Contains(strings.ToLower(query), "limit")
+	queryNeedsLimit := ! queryIsLimited && maxRows != 0
+	if queryNeedsLimit {
+		if strings.Contains(query, ";") {
+			query = strings.TrimSuffix(query, ";")
+		}
+		query = fmt.Sprintf("%s LIMIT %d;", query, maxRows)
+	}
+	return query
+}
 
 // QueryBasic demonstrates issuing a query and reading results.
 func QueryBasic(w io.Writer, projectID string, query string) error {
@@ -23,6 +37,8 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 		return fmt.Errorf("bigquery.NewClient: %v", err)
 	}
 	defer client.Close()
+
+	query = getFinalQuery(query)
 
 	fmt.Println("query: ", query)
 	q := client.Query(query)
@@ -51,13 +67,13 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 
 	schema := it.Schema.Relax()
 	widths, err := formats.CalculateRowWidths(it, schema)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	fmt.Fprintln(w)
 
-    for i, field := range schema {
+	for i, field := range schema {
 		fieldName := field.Name
 		if i != 0 {
 			fmt.Fprint(w, " | ")
@@ -78,7 +94,7 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 			break
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("iterator.Next: %v", err)
 		}
 
 		formats.PrintFormatedRow(w, row, widths)
@@ -89,8 +105,8 @@ func QueryBasic(w io.Writer, projectID string, query string) error {
 // queryCmd represents the query command
 var queryCmd = &cobra.Command{
 	Use:   "query",
-    Short: "Executes a BigQuery SQL query",
-    Long: `The 'query' command allows you to execute a BigQuery SQL query directly from the command line.
+	Short: "Executes a BigQuery SQL query",
+	Long: `The 'query' command allows you to execute a BigQuery SQL query directly from the command line.
 You need to provide the project ID and the SQL query as arguments.
 The command connects to the BigQuery client, runs the query, and prints the results.
 It's a convenient way to interact with your BigQuery datasets without leaving your terminal.`,
@@ -108,4 +124,7 @@ It's a convenient way to interact with your BigQuery datasets without leaving yo
 func init() {
 	rootCmd.AddCommand(queryCmd)
 	queryCmd.SetArgs([]string{"query"})
+	queryCmd.Flags().StringP("max_rows", "m", "100", "Maximum number of rows to return. If value is 0, all rows are returned. Default is 100. LIMIT clause takes precedence.")
+
+	viper.BindPFlag("max_rows", queryCmd.Flags().Lookup("max_rows"))
 }
