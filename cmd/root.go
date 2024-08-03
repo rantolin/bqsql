@@ -15,7 +15,7 @@ import (
 
 var project_id string
 var dataset string
-var configFile string
+var configProfile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -41,19 +41,24 @@ func addSubcommandPalletes() {
 	rootCmd.AddCommand(describe.DescribeCmd)
 }
 
+type Configuration struct {
+	ProjectID string `mapstructure:"project_id"`
+	Dataset   string `mapstructure:"dataset"`
+}
+type Config struct {
+	Configurations map[string]Configuration `mapstructure:"configurations"`
+	Default        string                   `mapstructure:"default"`
+}
+
 func initViper() {
 
-	if configFile != "" {
-		viper.SetConfigFile(configFile)
-	} else {
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
+	home, err := os.UserHomeDir()
+	cobra.CheckErr(err)
 
-		viper.AddConfigPath(home)
-		viper.AddConfigPath(".")
-		viper.SetConfigName("bqsql.yaml")
-		viper.SetConfigType("yaml")
-	}
+	viper.AddConfigPath(home)
+	viper.AddConfigPath(".")
+	viper.SetConfigName("bqsql.yaml")
+	viper.SetConfigType("yaml")
 
 	viper.AutomaticEnv()
 
@@ -62,14 +67,26 @@ func initViper() {
 	} else {
 		fmt.Println("Error reading config file:", err)
 	}
-	// viper.SetEnvPrefix("BQSQL")
-	// viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	var config Config
+	if err := viper.Unmarshal(&config); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	Profile := config.Configurations[config.Default]
+	if configProfile != "" {
+		Profile = config.Configurations[configProfile]
+	}
+
+	viper.Set("project_id", Profile.ProjectID)
+	viper.Set("dataset", Profile.Dataset)
 }
 
 func init() {
 	cobra.OnInitialize(initViper)
 
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.bqsql/bqsql.yaml or ./bqsql.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&configProfile, "config", "c", "", "Configuration profile (If not set, the 'default' profile will be used)")
 	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "p", "", "Project ID")
 	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "d", "", "Dataset name")
 
