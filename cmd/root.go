@@ -51,8 +51,8 @@ func initViper() {
 
 		viper.AddConfigPath(home)
 		viper.AddConfigPath(".")
-		viper.SetConfigName(".bqsqlrc")
-		viper.SetConfigType("env")
+		viper.SetConfigName("bqsql.yaml")
+		viper.SetConfigType("yaml")
 	}
 
 	viper.AutomaticEnv()
@@ -69,7 +69,7 @@ func initViper() {
 func init() {
 	cobra.OnInitialize(initViper)
 
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.bqsqlrc)")
+	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.bqsql/bqsql.yaml or ./bqsql.yaml)")
 	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "p", "", "Project ID")
 	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "d", "", "Dataset name")
 
