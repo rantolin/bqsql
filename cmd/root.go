@@ -42,7 +42,7 @@ func addSubcommandPalletes() {
 }
 
 type Configuration struct {
-	ProjectID string `mapstructure:"project_id"`
+	Project string `mapstructure:"project"`
 	Dataset   string `mapstructure:"dataset"`
 }
 type Config struct {
@@ -79,7 +79,7 @@ func initViper() {
 		Profile = config.Configurations[configProfile]
 	}
 
-	viper.Set("project_id", Profile.ProjectID)
+	viper.Set("project_id", Profile.Project)
 	viper.Set("dataset", Profile.Dataset)
 }
 
@@ -92,6 +92,7 @@ func init() {
 
 	viper.BindPFlag("project_id", rootCmd.PersistentFlags().Lookup("project_id"))
 	viper.BindPFlag("dataset", rootCmd.PersistentFlags().Lookup("dataset"))
+	viper.BindPFlag("profile", rootCmd.PersistentFlags().Lookup("profile"))
 
 	addSubcommandPalletes()
 }
