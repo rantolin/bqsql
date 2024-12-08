@@ -13,6 +13,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	DefaultProfileName = "default"
+)
+
 var project_id string
 var dataset string
 var configProfile string
@@ -43,7 +47,7 @@ func addSubcommandPalletes() {
 
 type Configuration struct {
 	Project string `mapstructure:"project"`
-	Dataset   string `mapstructure:"dataset"`
+	Dataset string `mapstructure:"dataset"`
 }
 type Config struct {
 	Configurations map[string]Configuration `mapstructure:"configurations"`
@@ -51,6 +55,8 @@ type Config struct {
 }
 
 func initViper() {
+	cmd, _, _ := rootCmd.Find(os.Args[1:])
+	isSetCommand := cmd != nil && cmd.Name() == "set"
 
 	home, err := os.UserHomeDir()
 	cobra.CheckErr(err)
@@ -62,10 +68,17 @@ func initViper() {
 
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	} else {
-		fmt.Println("Error reading config file:", err)
+	if !isSetCommand {
+		if err := viper.ReadInConfig(); err == nil {
+			fmt.Println("Using config file:", viper.ConfigFileUsed())
+		} else {
+			fmt.Printf("\nWarning: Configuration file not found\n")
+			fmt.Printf("  - Expected locations: ./bqsql.yaml and %s/bqsql.yaml\n", home)
+			fmt.Printf("  - Error: %v\n", err)
+			fmt.Printf("\nTo create a configuration file, run:\n")
+			fmt.Printf("  bqsql set --project_id <your-project> --dataset <your-dataset> --profile %s\n\n", DefaultProfileName)
+			fmt.Printf("Meanwhile, using values from flags and environment variables\n")
+		}
 	}
 
 	var config Config
