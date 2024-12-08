@@ -86,9 +86,9 @@ func initViper() {
 func init() {
 	cobra.OnInitialize(initViper)
 
-	rootCmd.PersistentFlags().StringVarP(&configProfile, "config", "c", "", "Configuration profile (If not set, the 'default' profile will be used)")
-	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "p", "", "Project ID")
-	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "d", "", "Dataset name")
+	rootCmd.PersistentFlags().StringVarP(&configProfile, "profile", "", "", "Configuration profile (If not set, the 'default' profile will be used)")
+	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "", "", "Project ID")
+	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "", "", "Dataset name")
 
 	viper.BindPFlag("project_id", rootCmd.PersistentFlags().Lookup("project_id"))
 	viper.BindPFlag("dataset", rootCmd.PersistentFlags().Lookup("dataset"))
