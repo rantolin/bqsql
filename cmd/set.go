@@ -23,7 +23,7 @@ func WriteConfigFile(w io.Writer, isDefault bool, profile string, projectID stri
             Configurations: make(map[string]Configuration),
         }
         v.Set("configurations", config.Configurations)
-        v.Set("default", "")
+        v.Set("default", DefaultProfileName)
     }
 
     // Get the entire existing configuration
@@ -67,7 +67,7 @@ func WriteConfigFile(w io.Writer, isDefault bool, profile string, projectID stri
         return
     }
 
-    fmt.Fprintf(w, "Configuration written for profile: %s\n", profile)
+    fmt.Fprintf(w, "Configuration written for profile %s in file ./%s\n", profile, v.ConfigFileUsed())
 }
 
 // setCmd represents the set command
