@@ -6,7 +6,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 	"strings"
 
 	"cloud.google.com/go/bigquery"
@@ -16,10 +15,9 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func getFinalQuery(query string) string {
-	maxRows := viper.GetInt("max_rows")
+func getFinalQuery(query string, maxRows int) string {
 	queryIsLimited := strings.Contains(strings.ToLower(query), "limit")
-	queryNeedsLimit := ! queryIsLimited && maxRows != 0
+	queryNeedsLimit := !queryIsLimited && maxRows != 0
 	if queryNeedsLimit {
 		if strings.Contains(query, ";") {
 			query = strings.TrimSuffix(query, ";")
@@ -30,15 +28,19 @@ func getFinalQuery(query string) string {
 }
 
 // QueryBasic demonstrates issuing a query and reading results.
-func QueryBasic(w io.Writer, projectID string, query string) error {
+func QueryBasic(cmd *cobra.Command, query string) error {
+	w := cmd.OutOrStdout()
 	ctx := context.Background()
+
+	projectID := viper.GetString("project_id")
 	client, err := bigquery.NewClient(ctx, projectID)
 	if err != nil {
 		return fmt.Errorf("bigquery.NewClient: %v", err)
 	}
 	defer client.Close()
 
-	query = getFinalQuery(query)
+	maxRows, _ := cmd.Flags().GetInt("max_rows")
+	query = getFinalQuery(query, maxRows)
 
 	fmt.Println("query: ", query)
 	q := client.Query(query)
@@ -113,11 +115,7 @@ It's a convenient way to interact with your BigQuery datasets without leaving yo
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		query := args[0]
-		QueryBasic(
-			cmd.OutOrStdout(),
-			viper.GetString("project_id"),
-			query,
-		)
+		QueryBasic(cmd, query)
 	},
 }
 
@@ -125,6 +123,4 @@ func init() {
 	rootCmd.AddCommand(queryCmd)
 	queryCmd.SetArgs([]string{"query"})
 	queryCmd.Flags().StringP("max_rows", "m", "100", "Maximum number of rows to return. If value is 0, all rows are returned. Default is 100. LIMIT clause takes precedence.")
-
-	viper.BindPFlag("max_rows", queryCmd.Flags().Lookup("max_rows"))
 }

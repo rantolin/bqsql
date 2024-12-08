@@ -15,7 +15,7 @@ import (
 
 var project_id string
 var dataset string
-var configFile string
+var configProfile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -41,19 +41,24 @@ func addSubcommandPalletes() {
 	rootCmd.AddCommand(describe.DescribeCmd)
 }
 
+type Configuration struct {
+	Project string `mapstructure:"project"`
+	Dataset   string `mapstructure:"dataset"`
+}
+type Config struct {
+	Configurations map[string]Configuration `mapstructure:"configurations"`
+	Default        string                   `mapstructure:"default"`
+}
+
 func initViper() {
 
-	if configFile != "" {
-		viper.SetConfigFile(configFile)
-	} else {
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
+	home, err := os.UserHomeDir()
+	cobra.CheckErr(err)
 
-		viper.AddConfigPath(home)
-		viper.AddConfigPath(".")
-		viper.SetConfigName(".bqsqlrc")
-		viper.SetConfigType("env")
-	}
+	viper.AddConfigPath(home)
+	viper.AddConfigPath(".")
+	viper.SetConfigName("bqsql.yaml")
+	viper.SetConfigType("yaml")
 
 	viper.AutomaticEnv()
 
@@ -62,19 +67,32 @@ func initViper() {
 	} else {
 		fmt.Println("Error reading config file:", err)
 	}
-	// viper.SetEnvPrefix("BQSQL")
-	// viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	var config Config
+	if err := viper.Unmarshal(&config); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	Profile := config.Configurations[config.Default]
+	if configProfile != "" {
+		Profile = config.Configurations[configProfile]
+	}
+
+	viper.Set("project_id", Profile.Project)
+	viper.Set("dataset", Profile.Dataset)
 }
 
 func init() {
 	cobra.OnInitialize(initViper)
 
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.bqsqlrc)")
-	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "p", "", "Project ID")
-	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "d", "", "Dataset name")
+	rootCmd.PersistentFlags().StringVarP(&configProfile, "profile", "", "", "Configuration profile (If not set, the 'default' profile will be used)")
+	rootCmd.PersistentFlags().StringVarP(&project_id, "project_id", "", "", "Project ID")
+	rootCmd.PersistentFlags().StringVarP(&dataset, "dataset", "", "", "Dataset name")
 
 	viper.BindPFlag("project_id", rootCmd.PersistentFlags().Lookup("project_id"))
 	viper.BindPFlag("dataset", rootCmd.PersistentFlags().Lookup("dataset"))
+	viper.BindPFlag("profile", rootCmd.PersistentFlags().Lookup("profile"))
 
 	addSubcommandPalletes()
 }
