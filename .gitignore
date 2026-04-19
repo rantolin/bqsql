@@ -1,0 +1,43 @@
+# AI/Agent Context
+GEMINI.md
+
+# Binaries and executables
+bqsql
+bqsql.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with Litmus
+*.out
+coverage.txt
+*.prof
+
+# Dependency directories
+# (not recommended for modules, but good to have if vendor is used)
+vendor/
+
+# Local configuration
+.env
+bqsql.yaml
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
