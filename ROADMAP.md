@@ -9,6 +9,7 @@ This document outlines the strategic phases for evolving `bqsql` from a basic CL
 
 | Task | Description | Issue Link | Complexity | Length | Priority | Dependencies |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Conventional Commits & Changelog** | Implement automated CHANGELOG.md generation based on Conventional Commits. | [#37](https://github.com/rantolin/bqsql/issues/37) | Easy | Short | **P0** | None |
 | **Result Pagination & Streaming** | Transition from in-memory result handling to a paginated/streaming approach. | [#4](https://github.com/rantolin/bqsql/issues/4) | Hard | Large | **P0** | None |
 | **Schema Caching** | Implement local caching of table schemas for `describe` and `query` operations. | [#23](https://github.com/rantolin/bqsql/issues/23) | Medium | Medium | **P1** | None |
 
@@ -75,7 +76,7 @@ This document outlines the strategic phases for evolving `bqsql` from a basic CL
 | Task | Description | Issue Link | Complexity | Length | Priority | Dependencies |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **CI/CD Pipeline** | Set up GitHub Actions for automated linting, testing, and releases. | [#9](https://github.com/rantolin/bqsql/issues/9) | Medium | Medium | **P0** | Phase 4 |
-| **Release Management** | Implement automated versioning and changelog generation. | [#30](https://github.com/rantolin/bqsql/issues/30) | Easy | Short | **P1** | CI/CD Pipeline |
+| **Release Management** | Implement automated versioning and release generation (GoReleaser). | [#30](https://github.com/rantolin/bqsql/issues/30) | Easy | Short | **P1** | CI/CD Pipeline |
 
 ---
 
@@ -84,33 +85,34 @@ This document outlines the strategic phases for evolving `bqsql` from a basic CL
 This sequence prioritizes foundational stability and quick wins first, followed by structural refactoring to unblock the API and interactive shell.
 
 ### Step 1: Quick Wins & Stability (Current Focus)
-1. **Revise Usage Messages** (P0) - [#7](https://github.com/rantolin/bqsql/issues/7)
-2. **Different Output Formats** (P0) - [#3](https://github.com/rantolin/bqsql/issues/3)
-3. **Result Pagination & Streaming** (P0) - [#4](https://github.com/rantolin/bqsql/issues/4)
+1. **Conventional Commits & Changelog** (P0) - [#37](https://github.com/rantolin/bqsql/issues/37)
+2. **Revise Usage Messages** (P0) - [#7](https://github.com/rantolin/bqsql/issues/7)
+3. **Different Output Formats** (P0) - [#3](https://github.com/rantolin/bqsql/issues/3)
+4. **Result Pagination & Streaming** (P0) - [#4](https://github.com/rantolin/bqsql/issues/4)
 
 ### Step 2: Strategic CLI Enhancements
-4. **Dry Run Support** (P1) - [#22](https://github.com/rantolin/bqsql/issues/22)
-5. **Schema Caching** (P1) - [#23](https://github.com/rantolin/bqsql/issues/23)
-6. **Shell Auto-completion** (P1) - [#24](https://github.com/rantolin/bqsql/issues/24)
+5. **Dry Run Support** (P1) - [#22](https://github.com/rantolin/bqsql/issues/22)
+6. **Schema Caching** (P1) - [#23](https://github.com/rantolin/bqsql/issues/23)
+7. **Shell Auto-completion** (P1) - [#24](https://github.com/rantolin/bqsql/issues/24)
 
 ### Step 3: Structural Refactoring (The SDK Pivot)
-7. **Library Decoupling** (P0) - [#25](https://github.com/rantolin/bqsql/issues/25)
-8. **Testing Suite** (P0) - [#26](https://github.com/rantolin/bqsql/issues/26)
-9. **CI/CD Pipeline** (P0) - [#9](https://github.com/rantolin/bqsql/issues/9)
-10. **Structured Logging & Errors** (P1) - [#1](https://github.com/rantolin/bqsql/issues/1)
+8. **Library Decoupling** (P0) - [#25](https://github.com/rantolin/bqsql/issues/25)
+9. **Testing Suite** (P0) - [#26](https://github.com/rantolin/bqsql/issues/26)
+10. **CI/CD Pipeline** (P0) - [#9](https://github.com/rantolin/bqsql/issues/9)
+11. **Structured Logging & Errors** (P1) - [#1](https://github.com/rantolin/bqsql/issues/1)
 
 ### Step 4: Full Management & REPL
-11. **Resource CRUD Operations** (P1) - [#27](https://github.com/rantolin/bqsql/issues/27)
-12. **Job & Task Management** (P1) - [#28](https://github.com/rantolin/bqsql/issues/28)
-13. **Interactive REPL** (P1) - [#29](https://github.com/rantolin/bqsql/issues/29)
-14. **Release Management** (P1) - [#30](https://github.com/rantolin/bqsql/issues/30)
+12. **Resource CRUD Operations** (P1) - [#27](https://github.com/rantolin/bqsql/issues/27)
+13. **Job & Task Management** (P1) - [#28](https://github.com/rantolin/bqsql/issues/28)
+14. **Interactive REPL** (P1) - [#29](https://github.com/rantolin/bqsql/issues/29)
+15. **Release Management** (P1) - [#30](https://github.com/rantolin/bqsql/issues/30)
 
 ### Step 5: Advanced Ecosystem (Visionary)
-15. **IAM & Security Management** (P2) - [#31](https://github.com/rantolin/bqsql/issues/31)
-16. **REST/gRPC API Server** (P2) - [#32](https://github.com/rantolin/bqsql/issues/32)
-17. **Authentication Middleware** (P2) - [#33](https://github.com/rantolin/bqsql/issues/33)
-18. **Rich Shell Features** (P2) - [#34](https://github.com/rantolin/bqsql/issues/34)
-19. **Live Autocomplete** (P2) - [#35](https://github.com/rantolin/bqsql/issues/35)
+16. **IAM & Security Management** (P2) - [#31](https://github.com/rantolin/bqsql/issues/31)
+17. **REST/gRPC API Server** (P2) - [#32](https://github.com/rantolin/bqsql/issues/32)
+18. **Authentication Middleware** (P2) - [#33](https://github.com/rantolin/bqsql/issues/33)
+19. **Rich Shell Features** (P2) - [#34](https://github.com/rantolin/bqsql/issues/34)
+20. **Live Autocomplete** (P2) - [#35](https://github.com/rantolin/bqsql/issues/35)
 
 ---
 
