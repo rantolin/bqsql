@@ -132,7 +132,8 @@ import (
 )
 
 // 1. Calculate widths (requires iterating through the results once)
-widths, err := formats.CalculateRowWidths(it, schema)
+provider := &formats.BigQueryRowProvider{It: it}
+widths, err := formats.CalculateRowWidths(provider)
 
 // 2. Reset or re-run the iterator and print
 for {

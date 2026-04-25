@@ -12,15 +12,15 @@ import (
 )
 
 func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
+	if a > b {
+		return a
+	}
+	return b
 }
 
-
-func CalculateRowWidths(it *bigquery.RowIterator, schema bigquery.Schema) ([]int, error) {
-	widths := make([]int, len(it.Schema))
+func CalculateRowWidths(it RowProvider) ([]int, error) {
+	schema := it.Schema()
+	widths := make([]int, len(schema))
 	for {
 		var row []bigquery.Value
 		err := it.Next(&row)
