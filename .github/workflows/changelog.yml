@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Generate changelog
-        uses: anton-yurchenko/git-chglog@master
+        uses: git-chglog/git-chglog@master
         with:
           version: latest
           outfile: CHANGELOG.md
