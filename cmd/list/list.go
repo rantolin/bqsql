@@ -16,9 +16,9 @@ func runList(cmd *cobra.Command, args []string) {
 
 // listCmd represents the list command
 var ListCmd = &cobra.Command{
-    Use:   "list",
-    Short: "Lists BigQuery resources",
-    Long: `The 'list' command is a parent command that lists various BigQuery resources.
+	Use:   "list",
+	Short: "Lists BigQuery resources",
+	Long: `The 'list' command is a parent command that lists various BigQuery resources.
 It doesn't directly perform any operations but serves as a root for other subcommands.
 Each subcommand corresponds to a specific resource type (e.g., tables, datasets) and lists all instances of that resource.
 Use 'bqsql list [subcommand]' to list all instances of a specific resource.`,

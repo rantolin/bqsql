@@ -12,62 +12,62 @@ import (
 )
 
 func WriteConfigFile(w io.Writer, isDefault bool, profile string, projectID string, datasetID string) {
-    // Create a new Viper instance just for writing
-    v := viper.New()
-    v.SetConfigFile("bqsql.yaml")
+	// Create a new Viper instance just for writing
+	v := viper.New()
+	v.SetConfigFile("bqsql.yaml")
 
-    // Read existing config
-    if err := v.ReadInConfig(); err != nil {
-        // If file doesn't exist, create a new config
-        config := Config{
-            Configurations: make(map[string]Configuration),
-        }
-        v.Set("configurations", config.Configurations)
-        v.Set("default", DefaultProfileName)
-    }
+	// Read existing config
+	if err := v.ReadInConfig(); err != nil {
+		// If file doesn't exist, create a new config
+		config := Config{
+			Configurations: make(map[string]Configuration),
+		}
+		v.Set("configurations", config.Configurations)
+		v.Set("default", DefaultProfileName)
+	}
 
-    // Get the entire existing configuration
-    var config Config
-    if err := v.Unmarshal(&config); err != nil {
-        fmt.Fprintf(w, "Error parsing config: %v\n", err)
-        return
-    }
+	// Get the entire existing configuration
+	var config Config
+	if err := v.Unmarshal(&config); err != nil {
+		fmt.Fprintf(w, "Error parsing config: %v\n", err)
+		return
+	}
 
-    // If no profile specified, use the default one
-    if profile == "" {
-        profile = config.Default
-    }
+	// If no profile specified, use the default one
+	if profile == "" {
+		profile = config.Default
+	}
 
-    // Get or create the profile configuration
-    if config.Configurations == nil {
-        config.Configurations = make(map[string]Configuration)
-    }
-    profileConfig := config.Configurations[profile]
+	// Get or create the profile configuration
+	if config.Configurations == nil {
+		config.Configurations = make(map[string]Configuration)
+	}
+	profileConfig := config.Configurations[profile]
 
-    // Only update values that are provided
-    if projectID != "" {
-        profileConfig.Project = projectID
-    }
-    if datasetID != "" {
-        profileConfig.Dataset = datasetID
-    }
+	// Only update values that are provided
+	if projectID != "" {
+		profileConfig.Project = projectID
+	}
+	if datasetID != "" {
+		profileConfig.Dataset = datasetID
+	}
 
-    // Update the configuration
-    config.Configurations[profile] = profileConfig
-    if isDefault {
-        config.Default = profile
-    }
+	// Update the configuration
+	config.Configurations[profile] = profileConfig
+	if isDefault {
+		config.Default = profile
+	}
 
-    // Write back the entire configuration
-    v.Set("configurations", config.Configurations)
-    v.Set("default", config.Default)
+	// Write back the entire configuration
+	v.Set("configurations", config.Configurations)
+	v.Set("default", config.Default)
 
-    if err := v.WriteConfig(); err != nil {
-        fmt.Fprintf(w, "Error writing config file: %v\n", err)
-        return
-    }
+	if err := v.WriteConfig(); err != nil {
+		fmt.Fprintf(w, "Error writing config file: %v\n", err)
+		return
+	}
 
-    fmt.Fprintf(w, "Configuration written for profile %s in file ./%s\n", profile, v.ConfigFileUsed())
+	fmt.Fprintf(w, "Configuration written for profile %s in file ./%s\n", profile, v.ConfigFileUsed())
 }
 
 // setCmd represents the set command

@@ -67,12 +67,13 @@ func QueryBasic(cmd *cobra.Command, query string) error {
 		return err
 	}
 
-	schema := it.Schema.Relax()
-	widths, err := formats.CalculateRowWidths(it, schema)
+	provider := &formats.BigQueryRowProvider{It: it}
+	widths, err := formats.CalculateRowWidths(provider)
 	if err != nil {
 		return err
 	}
 
+	schema := it.Schema.Relax()
 	fmt.Fprintln(w)
 
 	for i, field := range schema {
