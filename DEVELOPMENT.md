@@ -146,9 +146,43 @@ for {
 
 ---
 
-## 6. Best Practices
+## 7. Commit Standard (Conventional Commits)
 
-- **Errors**: Return errors from functions and let Cobra or your `Run` block handle them (usually with `fmt.Println` or `os.Exit`).
-- **Context**: Use `context.Background()` or pass context down if necessary for cancellation.
-- **Flags**: Use `PersistentFlags()` on the `rootCmd` only for global settings. Use local `Flags()` for command-specific options.
-- **Documentation**: Always provide `Short` and `Long` descriptions for your commands.
+`bqsql` follows the [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) specification for commit messages. This allows for automated changelog generation and easier project tracking.
+
+### Commit Format
+
+Each commit message consists of a **header**, a **body**, and a **footer**.
+
+```text
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Common Types
+
+- `feat`: A new feature.
+- `fix`: A bug fix.
+- `docs`: Documentation only changes.
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, etc).
+- `refactor`: A code change that neither fixes a bug nor adds a feature.
+- `perf`: A code change that improves performance.
+- `test`: Adding missing tests or correcting existing tests.
+- `chore`: Changes to the build process or auxiliary tools and libraries.
+
+### Example
+
+```text
+feat(query): add support for dry-run mode
+
+This allows users to estimate the number of bytes processed before running the query.
+
+BREAKING CHANGE: the '--estimate' flag has been replaced by '--dry-run'.
+```
+
+### Automation
+
+A `CHANGELOG.md` is automatically generated and updated via GitHub Actions whenever a new version tag (e.g., `v1.2.3`) is pushed to the repository.
