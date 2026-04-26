@@ -11,22 +11,22 @@ permissions:
 jobs:
   changelog:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Install git-chglog
+        run: go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
+
       - name: Generate changelog
-        uses: git-chglog/git-chglog@master
-        with:
-          version: latest
-          outfile: CHANGELOG.md
+        run: $(go env GOPATH)/bin/git-chglog -o CHANGELOG.md
 
       - name: Commit and push
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add CHANGELOG.md
-          git commit -m "docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]" || echo "No changes to commit"
+          git commit -m "docs: update changelog for ${{ github.ref_name }} [skip ci]" || true
           git push
