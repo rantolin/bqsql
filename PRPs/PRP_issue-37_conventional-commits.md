@@ -59,6 +59,14 @@ git-chglog -o CHANGELOG.md
 - [ ] **Task 5: Automation**: Create `.github/workflows/changelog.yml` for automated updates.
 - [ ] **Task 6: Documentation**: Update `DEVELOPMENT.md` to instruct contributors on using Conventional Commits.
 
+## 🚀 Future Improvements (Option A: Release PR)
+- **Problem**: Current push-to-main strategy fails when `main` is protected.
+- **Solution**: Move to a "Release PR" workflow (e.g., using `release-please` or `standard-version`).
+- **Workflow**:
+    1. Instead of manual tagging, a GitHub Action detects changes and opens a PR with the version bump and `CHANGELOG.md` update.
+    2. Merging the PR triggers the actual release and tagging.
+- **Benefits**: Respects branch protections, allows review of the changelog before it's permanent, and ensures consistent versioning.
+
 ## ✅ Validation Loop
 ### Level 1: Structure & Syntax
 ```bash

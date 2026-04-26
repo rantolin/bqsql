@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   changelog:
@@ -23,10 +24,12 @@ jobs:
       - name: Generate changelog
         run: $(go env GOPATH)/bin/git-chglog -o CHANGELOG.md
 
-      - name: Commit and push
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add CHANGELOG.md
-          git commit -m "docs: update changelog for ${{ github.ref_name }} [skip ci]" || true
-          git push origin HEAD:main
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "docs: update changelog for ${{ github.ref_name }} [skip ci]"
+          title: "docs: update changelog for ${{ github.ref_name }}"
+          body: "Automated changelog update for version ${{ github.ref_name }}."
+          branch: "docs/changelog-${{ github.ref_name }}"
+          base: main
+          delete-branch: true
